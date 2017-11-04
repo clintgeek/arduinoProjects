@@ -4,6 +4,8 @@
   * controls 2 relays to adjust aquarium lighting (white/blue/all off)
 * atticOutdoorLights
   * controls outdoor 12v lighting via a relay
+* controllableOutlet
+  * controls an electircal outlet via a relay
 * frontDoorMotionTemp
   * motion sensor for alerts/lighting control
   * outdoor air temperature
