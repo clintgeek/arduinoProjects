@@ -4,7 +4,8 @@
     * 01 deskLamp
       * 011 aquariumLights
     * 02 masterTV
-    * 05  atticOutdoorLights
+    * 03 kidsControlledOutlet1
+    * 05 atticOutdoorLights
       * 045 controlledOutlet1 (37)
       * 035 garageMotion (29)
       * 025 frontDoorMotionTemp (21)

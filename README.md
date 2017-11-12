@@ -13,6 +13,8 @@
   * daylight sensor for lighting control
 * garageMotion
   * motion sensor for lighting control
+* kidsControlledOutlet1
+  * manages a two channel relay controlling two sides of an outlet
 * roomTemp
   * indoor air temperature
 * tc_cabinet
