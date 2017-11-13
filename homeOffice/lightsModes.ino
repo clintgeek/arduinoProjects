@@ -13,6 +13,40 @@ void powerOnSelfTest() {
   rgb(0, 0, 0);
 }
 
+void verifyAlarmRequest() {
+  rgb(0,0,0);
+  delay(250);
+
+  rgb(100,0,0);
+  delay(250);
+
+  rgb(0,0,0);
+  delay(250);
+
+  rgb(100,0,0);
+  delay(250);
+
+  rgb(0,0,0);
+  delay(250);
+}
+
+void verifyAlarmSet() {
+  rgb(0,0,0);
+  delay(250);
+
+  rgb(0,0,100);
+  delay(250);
+
+  rgb(0,0,0);
+  delay(250);
+
+  rgb(0,0,100);
+  delay(250);
+
+  rgb(0,0,0);
+  delay(250);
+}
+
 void solidWhiteMode() {
   rgb(255, 150, 125);
 }

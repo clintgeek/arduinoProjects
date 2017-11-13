@@ -73,6 +73,7 @@ const unsigned long testSendDelay = 5000;
 // NODE SPECIFIC CONFIGURATION
 const int this_node = 01;
 const bool debug = true;
+const bool hasTherm = false;
 
 // Configure RGB Strip
 const int gOutPin = 10;
@@ -134,12 +135,16 @@ void setup() {
 }
 
 void loop() {
+  threadSafeLoop();
+  inputManager(mode);
+}
+
+void threadSafeLoop() {
   currentMillis = millis();
   Watchdog.reset();
-  checkTempTimer();
+  if(hasTherm) { checkTempTimer(); }
   testDispatcher();
   inputWatcher();
-  inputManager(mode);
 }
 
 void inputWatcher() {
@@ -154,6 +159,14 @@ void checkTempTimer() {
   if (!lastTempCheck || checkTempNow) {
     checkAirTemp();
   }
+}
+
+void setAlarmButtonPressed() {
+  debugPrinter("set alarm button pressed", 1);
+  verifyAlarmRequest();
+  sendSensorData(247, 1);
+  delay(500);
+  sendSensorData(247, 0);
 }
 
 void checkAirTemp() {
@@ -309,7 +322,7 @@ void inputManager(int mode, int param1, int param2, int param3) {
     setRgb(param1, param2, param3);
   }
 
-  modeManager(mode);
+  modeManager(mode, param1);
 }
 
 void startHeartbeat(int testLimit) {

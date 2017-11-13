@@ -9,10 +9,11 @@
       * 045 controlledOutlet1 (37)
       * 035 garageMotion (29)
       * 025 frontDoorMotionTemp (21)
-      * 015 roomTemp(13)
+          * 0125 controlledOutletDouble (85)
 
 ## Sensor Types
 * Operational Mode = 01-100
+* ButtonPressed = 247
 * Light Brightness Level = 248
 * PIR Motion Status = 249
 * Air Temperature = 250

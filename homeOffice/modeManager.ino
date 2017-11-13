@@ -1,4 +1,8 @@
 void modeManager(int request) {
+  modeManager(request, 0);
+}
+
+void modeManager(int request, int param1) {
   switch (request) {
     // First Row
     case 1:
@@ -56,6 +60,7 @@ void modeManager(int request) {
       rgbBreatheMode();
       break;
     case 15:
+      setAlarmButtonPressed();
       break;
     // Shifted Second Row
     case 16:
@@ -106,6 +111,23 @@ void modeManager(int request) {
     case 28:
       setMode(request);
       biasLightMode();
+      break;
+    case 100:
+      verifyAlarmSet();
+      break;
+    case 250:
+    case 251:
+    case 253:
+      checkAirTemp();
+      break;
+    case 254:
+      debugPrinter("Ping Pong!", 1);
+      sendSensorData(254, 254);
+      break;
+    case 255:
+      startHeartbeat(param1);
+      break;
+    default:
       break;
   }
 }
