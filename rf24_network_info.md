@@ -6,7 +6,7 @@
     * 02 masterTV
     * 03 kidsControlledOutlet1
     * 05 atticOutdoorLights
-      * 045 controlledOutlet1 (37)
+      * 045 controlledOutlet1 (37)i
       * 035 garageMotion (29)
       * 025 frontDoorMotionTemp (21)
           * 0125 controlledOutletDouble (85)
