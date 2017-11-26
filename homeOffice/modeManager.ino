@@ -23,12 +23,10 @@ void modeManager(int request, int param1) {
       rgbFadeMode();
       break;
     case 5:
-      setMode(request);
-      pinkTurquoiseBreatheMode();
       break;
     case 6:
       setMode(request);
-      tvMode();
+      danceMode();
       break;
     // Third Row
     case 7:
@@ -68,12 +66,8 @@ void modeManager(int request, int param1) {
       sunriseMode(2, 5);
       break;
     case 17:
-      setMode(request);
-      sunsetMode(0, 5);
       break;
     case 18:
-      setMode(request);
-      danceMode();
       break;
     // Shifted Third Row
     case 19:
@@ -96,10 +90,6 @@ void modeManager(int request, int param1) {
       adjustColor('b', 'n');
       break;
     // Other Modes
-    case 25:
-      setMode(28);
-      biasFadeInMode();
-      break;
     case 26:
       setMode(request);
       solidBlueMode();
@@ -107,18 +97,6 @@ void modeManager(int request, int param1) {
     case 27:
       setMode(request);
       nightVisionMode();
-      break;
-    case 28:
-      setMode(request);
-      biasLightMode();
-      break;
-    case 100:
-      verifyAlarmSet();
-      break;
-    case 250:
-    case 251:
-    case 253:
-      checkAirTemp();
       break;
     case 254:
       debugPrinter("Ping Pong!", 1);

@@ -98,7 +98,7 @@ void threadSafeDelay(int min, int max) {
 
 void threadSafeDelay(int duration) {
   for (int delayCounter = 0; delayCounter < duration; delayCounter++) {
-    threadSafeLoop();
+    loop();
     delay(1);
   }
 }

@@ -30,39 +30,8 @@ void verifyAlarmRequest() {
   delay(250);
 }
 
-void verifyAlarmSet() {
-  rgb(0,0,0);
-  delay(250);
-
-  rgb(0,0,100);
-  delay(250);
-
-  rgb(0,0,0);
-  delay(250);
-
-  rgb(0,0,100);
-  delay(250);
-
-  rgb(0,0,0);
-  delay(250);
-}
-
 void solidWhiteMode() {
   rgb(255, 150, 125);
-}
-
-void biasLightMode() {
-  rgb(0, 0, 80);
-}
-
-void biasFadeInMode() {
-  breatheIn(2, mode, 80, 5);
-  modeManager(28);
-}
-
-void biasFadeOutMode() {
-  breatheOut(2, mode, 80, 5);
-  modeManager(3);
 }
 
 void solidBlueMode() {
@@ -79,8 +48,10 @@ void solidColorMode() {
 
 void breatheMode() {
   int checkMode = mode;
-  breatheIn(primaryColor(), checkMode);
-  breatheOut(primaryColor(), checkMode);
+  while (checkMode == mode) {
+    breatheIn(primaryColor(), checkMode);
+    breatheOut(primaryColor(), checkMode);
+  }
 }
 
 void allOff() {
@@ -114,71 +85,14 @@ void rgbFadeMode() {
   }
 }
 
-void pinkTurquoiseBreatheMode() {
-  int checkMode = mode;
-  breathePink(checkMode);
-  breatheTurquoise(checkMode);
-}
-
-void breathePink(int checkMode) {
-  int brightness[3] = {0, 0, 0};
-
-  for (int i = 0; (i < 50) && (checkMode == mode); i++) {
-    brightness[0] += 4;
-    brightness[1] += 0;
-    brightness[2] += 1;
-
-    rgb(brightness[0], brightness[1], brightness[2]);
-    threadSafeDelay(40);
-  }
-
-  for (int i = 0; (i < 50) && (checkMode == mode); i++) {
-    brightness[0] -= 4;
-    brightness[1] -= 0;
-    brightness[2] -= 1;
-
-    rgb(brightness[0], brightness[1], brightness[2]);
-    threadSafeDelay(40);
-  }
-}
-
-void breatheTurquoise(int checkMode) {
-  int brightness[3] = {0, 0, 0};
-
-  for (int i = 0; (i < 50) && (checkMode == mode); i++) {
-    brightness[0] += 0;
-    brightness[1] += 4;
-    brightness[2] += 4;
-
-    rgb(brightness[0], brightness[1], brightness[2]);
-    threadSafeDelay(40);
-  }
-
-  for (int i = 0; (i < 50) && (checkMode == mode); i++) {
-    brightness[0] -= 0;
-    brightness[1] -= 4;
-    brightness[2] -= 4;
-
-    rgb(brightness[0], brightness[1], brightness[2]);
-    threadSafeDelay(40);
-  }
-}
-
-void tvMode() {
-  int rBrightness = random(0, 255);
-  int gBrightness = random(0, 255);
-  int bBrightness = random(0, 255);
-
-  rgb(rBrightness, gBrightness, bBrightness);
-  threadSafeDelay(250, 1750);
-}
-
 void rgbBreatheMode() {
   int checkMode = mode;
   int color;
-  for (color = 0; color < 3; color++) {
-    breatheIn(color, checkMode);
-    breatheOut(color, checkMode);
+  while (checkMode == mode) {
+    for (color = 0; color < 3; color++) {
+      breatheIn(color, checkMode);
+      breatheOut(color, checkMode);
+    }
   }
 }
 
@@ -191,26 +105,20 @@ void sunriseMode(int color, int duration) {
   modeManager(26);
 }
 
-void sunsetMode(int color, int duration) {
-  int checkMode = mode;
-  long fadeInMillis = (duration * 60L * 1000L);
-  int delayDuration = fadeInMillis / 255;
-
-  breatheOut(color, checkMode, 255, delayDuration);
-  modeManager(3);
-}
-
 void danceMode() {
-  int rgbValue[3] = { 0, 0, 0 };
-  int primaryColor = random(0, 3);
-  rgbValue[primaryColor] = 255;
+  int checkMode = mode;
+  while (checkMode == mode) {
+    int rgbValue[3] = { 0, 0, 0 };
+    int primaryColor = random(0, 3);
+    rgbValue[primaryColor] = 255;
 
-  for (int i = 0; i < 3; i++) {
-    if (i != primaryColor) {
-      rgbValue[i] = random(0, 85);
+    for (int i = 0; i < 3; i++) {
+      if (i != primaryColor) {
+        rgbValue[i] = random(0, 85);
+      }
     }
-  }
 
-  rgb(rgbValue[0], rgbValue[1], rgbValue[2]);
-  threadSafeDelay(100, 500);
+    rgb(rgbValue[0], rgbValue[1], rgbValue[2]);
+    threadSafeDelay(100, 500);
+  }
 }

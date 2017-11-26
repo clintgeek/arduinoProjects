@@ -40,19 +40,6 @@
 #include <RF24.h>
 #include <RF24_config.h>
 
-#define AIR_THERM_PIN A0
-// resistance at 25 degrees C
-#define THERMISTORNOMINAL 10000
-// temp. for nominal resistance (almost always 25 C)
-#define TEMPERATURENOMINAL 25
-// how many samples to take and average, more takes longer
-// but is more 'smooth'
-#define NUMSAMPLES 30
-// The beta coefficient of the thermistor (usually 3000-4000)
-#define BCOEFFICIENT 3950
-// the value of the 'other' resistor
-#define SERIESRESISTOR 10000
-
 // Initialize Global Variables
 int rVal = 0;
 int gVal = 0;
@@ -60,10 +47,7 @@ int bVal = 255;
 int mode = 3;
 int shift;
 const int breatheSpeed = 30;
-int samples[NUMSAMPLES];
 unsigned long currentMillis;
-unsigned long lastTempCheck;
-const unsigned long tempCheckDelay = 300000;
 bool testSend = false;
 int numTests;
 int testsSent = 0;
@@ -71,9 +55,8 @@ unsigned long lastTestSent;
 const unsigned long testSendDelay = 5000;
 
 // NODE SPECIFIC CONFIGURATION
-const int this_node = 01;
+const int THIS_NODE = 01;
 const bool debug = true;
-const bool hasTherm = false;
 
 // Configure RGB Strip
 const int gOutPin = 10;
@@ -127,22 +110,16 @@ void setup() {
   int countdownMS = Watchdog.enable();
 
   radio.begin();
-  network.begin(/*channel*/ 90, /*node address*/ this_node);
+  network.begin(/*channel*/ 90, /*node address*/ THIS_NODE);
   powerOnSelfTest();
 
-  debugPrinter("My node id is: ", this_node, 0);
+  debugPrinter("My node id is: ", THIS_NODE, 0);
   debugPrinter("Arduino Ready!", 1);
 }
 
 void loop() {
-  threadSafeLoop();
-  inputManager(mode);
-}
-
-void threadSafeLoop() {
   currentMillis = millis();
   Watchdog.reset();
-  if(hasTherm) { checkTempTimer(); }
   testDispatcher();
   inputWatcher();
 }
@@ -154,67 +131,12 @@ void inputWatcher() {
   if (kpd.getKeys()) { keypadInputProcessor(); }
 }
 
-void checkTempTimer() {
-  bool checkTempNow = ((currentMillis - lastTempCheck) > tempCheckDelay);
-  if (!lastTempCheck || checkTempNow) {
-    checkAirTemp();
-  }
-}
-
 void setAlarmButtonPressed() {
   debugPrinter("set alarm button pressed", 1);
   verifyAlarmRequest();
   sendSensorData(247, 1);
   delay(500);
   sendSensorData(247, 0);
-}
-
-void checkAirTemp() {
-  int degrees_f = checkTemp(AIR_THERM_PIN);
-
-  debugPrinter("Air Temperature (F): ", degrees_f, 0);
-  sendSensorData(250, degrees_f);
-  lastTempCheck = millis();
-}
-
-int checkTemp(int pin) {
-  uint8_t i;
-  float average;
-
-  // take N samples in a row, with a slight delay
-  for (i = 0; i < NUMSAMPLES; i++) {
-    samples[i] = analogRead(pin);
-    delay(10);
-  }
-
-  // average all the samples out
-  average = 0;
-  for (i = 0; i < NUMSAMPLES; i++) {
-    average += samples[i];
-  }
-  average /= NUMSAMPLES;
-
-  // convert the value to resistance
-  average = 1023 / average - 1;
-  average = SERIESRESISTOR / average;
-
-  float steinhart;
-  int degrees_f;
-  steinhart = average / THERMISTORNOMINAL;     // (R/Ro)
-  steinhart = log(steinhart);                  // ln(R/Ro)
-  steinhart /= BCOEFFICIENT;                   // 1/B * ln(R/Ro)
-  steinhart += 1.0 / (TEMPERATURENOMINAL + 273.15); // + (1/To)
-  steinhart = 1.0 / steinhart;                 // Invert
-  steinhart -= 273.15;                         // convert to C
-  steinhart = (steinhart * 9.0) / 5.0 + 32.0; // Convert Celcius to Fahrenheit
-
-  if (steinhart <= 0) {
-    degrees_f = 0;
-  } else {
-    degrees_f = (int)steinhart;
-  }
-
-  return degrees_f;
 }
 
 void networkInputProcessor() {
@@ -224,13 +146,13 @@ void networkInputProcessor() {
 
     network.read(header,&payload,sizeof(payload));
 
-    if (payload.mode) {
+    if (payload.mode && (payload.mode != mode)) {
       int mode = payload.mode;
       int param1 = payload.param1;
       int param2 = payload.param2;
       int param3 = payload.param3;
 
-      debugPrinter("Mode: ", mode, 0);
+      debugPrinter("nMode: ", mode, 0);
       if (param1 || param2 || param3) {
         debugPrinter("Param1: ", param1, 0);
         debugPrinter("Param2: ", param2, 0);
@@ -274,7 +196,7 @@ void serialInputProcessor() {
     int param2 = atoi(param2Array);
     int param3 = atoi(param3Array);
 
-    debugPrinter("Mode: ", mode, 0);
+    debugPrinter("sMode: ", mode, 0);
     if (param1 || param2 || param3) {
       debugPrinter("Param1: ", param1, 0);
       debugPrinter("Param2: ", param2, 0);
