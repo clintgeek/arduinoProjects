@@ -56,7 +56,7 @@ const unsigned long testSendDelay = 5000;
 
 // NODE SPECIFIC CONFIGURATION
 const int THIS_NODE = 01;
-const bool debug = true;
+const bool debug = false;
 
 // Configure RGB Strip
 const int gOutPin = 10;
@@ -131,12 +131,12 @@ void inputWatcher() {
   if (kpd.getKeys()) { keypadInputProcessor(); }
 }
 
-void setAlarmButtonPressed() {
-  debugPrinter("set alarm button pressed", 1);
-  verifyAlarmRequest();
-  sendSensorData(247, 1);
+void sendButtonPress(int buttonId, bool verifyPress) {
+  debugPrinter("set button pressed:", buttonId, 1);
+  if (verifyPress) { verifyButtonPress(); }
+  sendSensorData(buttonId, 1);
   delay(500);
-  sendSensorData(247, 0);
+  sendSensorData(buttonId, 0);
 }
 
 void networkInputProcessor() {
@@ -152,7 +152,7 @@ void networkInputProcessor() {
       int param2 = payload.param2;
       int param3 = payload.param3;
 
-      debugPrinter("nMode: ", mode, 0);
+      debugPrinter("Network Mode: ", mode, 0);
       if (param1 || param2 || param3) {
         debugPrinter("Param1: ", param1, 0);
         debugPrinter("Param2: ", param2, 0);
@@ -196,7 +196,7 @@ void serialInputProcessor() {
     int param2 = atoi(param2Array);
     int param3 = atoi(param3Array);
 
-    debugPrinter("sMode: ", mode, 0);
+    debugPrinter("Serial Mode: ", mode, 0);
     if (param1 || param2 || param3) {
       debugPrinter("Param1: ", param1, 0);
       debugPrinter("Param2: ", param2, 0);

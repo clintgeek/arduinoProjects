@@ -13,21 +13,23 @@ void powerOnSelfTest() {
   rgb(0, 0, 0);
 }
 
-void verifyAlarmRequest() {
+void verifyButtonPress() {
   rgb(0,0,0);
   delay(250);
 
-  rgb(100,0,0);
-  delay(250);
-
-  rgb(0,0,0);
-  delay(250);
-
-  rgb(100,0,0);
+  rgb(0,100,0);
   delay(250);
 
   rgb(0,0,0);
   delay(250);
+
+  rgb(0,100,0);
+  delay(250);
+
+  rgb(0,0,0);
+  delay(250);
+
+  modeManager(mode);
 }
 
 void solidWhiteMode() {

@@ -10,8 +10,7 @@ void modeManager(int request, int param1) {
       solidColorMode();
       break;
     case 2:
-      setMode(request);
-      breatheMode();
+      sendButtonPress(242, true);
       break;
     case 3:
       setMode(request);
@@ -20,13 +19,15 @@ void modeManager(int request, int param1) {
     // Second Row
     case 4:
       setMode(request);
-      rgbFadeMode();
+      breatheMode();
       break;
     case 5:
+      setMode(request);
+      rgbBreatheMode();
       break;
     case 6:
       setMode(request);
-      danceMode();
+      rgbFadeMode();
       break;
     // Third Row
     case 7:
@@ -54,20 +55,20 @@ void modeManager(int request, int param1) {
       solidWhiteMode();
       break;
     case 14:
-      setMode(request);
-      rgbBreatheMode();
+      sendButtonPress(243, true);
       break;
     case 15:
-      setAlarmButtonPressed();
+      sendButtonPress(247, true);
       break;
     // Shifted Second Row
     case 16:
-      setMode(request);
-      sunriseMode(2, 5);
+      sendButtonPress(244, false);
       break;
     case 17:
+      sendButtonPress(245, false);
       break;
     case 18:
+      sendButtonPress(246, false);
       break;
     // Shifted Third Row
     case 19:
@@ -90,6 +91,10 @@ void modeManager(int request, int param1) {
       adjustColor('b', 'n');
       break;
     // Other Modes
+    case 25:
+      setMode(request);
+      sunriseMode(2, 5);
+      break;
     case 26:
       setMode(request);
       solidBlueMode();
@@ -97,6 +102,10 @@ void modeManager(int request, int param1) {
     case 27:
       setMode(request);
       nightVisionMode();
+      break;
+    case 28:
+      setMode(request);
+      danceMode();
       break;
     case 254:
       debugPrinter("Ping Pong!", 1);
