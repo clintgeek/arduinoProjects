@@ -115,6 +115,7 @@ void adjustColor(char color, char direction) {
       bVal = adjustBrightness(bVal, direction);
       break;
   }
+  modeManager(mode);
 }
 
 int adjustBrightness(int brightness, char direction) {
